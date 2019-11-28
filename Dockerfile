@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:11-alpine
 
 RUN addgroup cyberchef -S && \
     adduser cyberchef -G cyberchef -S && \
@@ -18,8 +18,11 @@ RUN cd /srv && \
 
 USER cyberchef
 
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+
 RUN cd /srv/CyberChef && \
     grunt prod
 
 WORKDIR /srv/CyberChef/build/prod
+
 ENTRYPOINT ["http-server", "-p", "8000"]
